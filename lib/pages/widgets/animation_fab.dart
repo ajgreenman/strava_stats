@@ -5,7 +5,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 class AnimatedFab extends StatefulWidget {
   final Function(String) onClick;
   final IconData openIcon;
-  Map<String, bool> activeIcons;
+  final Map<String, bool> activeIcons;
 
   AnimatedFab({Key key, this.onClick, this.openIcon, this.activeIcons}) : super(key: key);
 

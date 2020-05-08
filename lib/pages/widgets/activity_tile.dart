@@ -64,25 +64,19 @@ class ActivityTile extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Icon(MdiIcons.ruler, size: 12),
-            Text(' ' + _convertToMiles(activity.distance).toStringAsFixed(2) + ' mi'),
-          ]
-        ),
-        Row(
-          children: [
-            Icon(MdiIcons.imageFilterHdr, size: 12),
-            Text(' ' + _convertToFeet(activity.totalElevationGain).toStringAsFixed(0) + ' ft'),
-          ]
-        ),
-        Row(
-          children: [
-            Icon(MdiIcons.timer, size: 12),
-            Text(' ' + _prettyTime(activity.movingTime)),
-          ]
-        ),
+        _buildActivityStat(MdiIcons.ruler, _convertToMiles(activity.distance).toStringAsFixed(2) + ' mi'),
+        _buildActivityStat(MdiIcons.imageFilterHdr, _convertToFeet(activity.totalElevationGain).toStringAsFixed(0) + ' ft'),
+        _buildActivityStat(MdiIcons.timer, _prettyTime(activity.movingTime)),
       ],
+    );
+  }
+
+  Widget _buildActivityStat(IconData icon, String text) {
+    return Row(
+      children: [
+        Icon(icon, size: 12),
+        Text(' ' + text),
+      ]
     );
   }
 

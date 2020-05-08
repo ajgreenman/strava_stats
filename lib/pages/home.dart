@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:strava_stats/pages/login.dart';
 import 'package:strava_stats/pages/profile.dart';
 import 'package:strava_stats/services/strava_service.dart';
@@ -38,18 +37,6 @@ class _HomePageState extends State<HomePage> {
         title: Text('Strava Stats'),
         backgroundColor: Colors.deepOrange,
         actions: <Widget>[
-          PopupMenuButton(
-            icon: Icon(MdiIcons.sort),
-            onSelected: (_) {
-              _isLoggedIn ? _logoutFromStrava() : _loginToStrava();
-            },
-            itemBuilder: (BuildContext context) => [
-              PopupMenuItem(
-                child: Text(_isLoggedIn ? 'Log Out' : 'Log In'),
-                value: 1,
-              )
-            ],
-          ),
           PopupMenuButton(
             icon: Icon(Icons.settings),
             onSelected: (_) {
