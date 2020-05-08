@@ -112,8 +112,10 @@ class _AnimatedFabState extends State<AnimatedFab> with SingleTickerProviderStat
   }
 
   _onIconClick(String type) {
-    widget.onClick(type);
-    close();
+    if(!_animationController.isDismissed) {
+      widget.onClick(type);
+      close();
+    }
   }
 
   _onFabTap() {

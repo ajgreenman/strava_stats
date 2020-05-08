@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:strava_flutter/Models/activity.dart';
 import 'package:strava_flutter/Models/detailedAthlete.dart';
-import 'package:strava_stats/models/list_model.dart';
 import 'package:strava_stats/pages/widgets/activity_list/activity_tile.dart';
 import 'package:strava_stats/pages/widgets/animated_fab/animation_fab.dart';
 import 'package:strava_stats/pages/widgets/profile_bar.dart';
@@ -25,9 +24,6 @@ class _ProfilePageState extends State<ProfilePage> {
   SortDirection sortDirection = SortDirection.descending;
   SortType activeSort = SortType.date;
 
-  final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
-  ListModel listModel;
-
   @override
   void initState() {
     super.initState();
@@ -35,7 +31,6 @@ class _ProfilePageState extends State<ProfilePage> {
     widget.stravaService.getAllActivities().then((activities) {
       setState(() {
         _activities = activities;
-        listModel = ListModel(_listKey, activities);
         _isLoading = _athlete == null;
       });
     });
@@ -78,11 +73,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ProfileBar(athlete: _athlete),
                     Divider(thickness: 1),
                     Expanded(
-                      child: !_hasActivities() ? _loading('Loading your activities...') : AnimatedList(
-                        itemBuilder: (context, index, animation) => ActivityTile(activity: listModel[index], animation: animation),
-                        initialItemCount: _activities.length,
-                        key: _listKey,
-                      ),
+                      child: _buildActivityList(),
                     ),
                   ],
                 ),
@@ -94,6 +85,40 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ),
     );
+  }
+
+  Widget _buildActivityList() {
+    if(!_hasActivities()) {
+      return _loading('Loading your activities...');
+    }
+
+    var activeActivities = _getActiveActivities();
+    
+    if(activeActivities == null || activeActivities.length < 1) {
+      return Padding(
+        child: Text('No activities to display'),
+        padding: EdgeInsets.all(10),
+      );
+    }
+
+    return AnimatedList(
+      itemBuilder: (context, index, animation) {
+        return ActivityTile(activity: activeActivities[index], animation: animation);
+      },
+      initialItemCount: activeActivities.length
+    );
+  }
+
+  List<SummaryActivity> _getActiveActivities() {
+    return _activities.where((activity) => _filters[_getType(activity)]).toList();
+  }
+
+  String _getType(SummaryActivity activity) {
+    if(activity.type != 'Run' && activity.type != 'Ride' && activity.type != 'Swim') {
+      return 'Other';
+    }
+
+    return activity.type;
   }
 
   Widget _buildSortFab() {
@@ -120,24 +145,6 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() {
       _filters[type] = !_filters[type];
     });
-    
-    listModel.clear();
-
-    _activities.forEach((activity) {
-      _filters.forEach((key, value) {
-        if(value &&_matchesType(activity, key)) {
-          listModel.add(activity);
-        }
-      });
-    });
-  }
-
-  bool _matchesType(SummaryActivity activity, String type) {
-    if(type == 'Other') {
-      return activity.type != 'Run' && activity.type != 'Ride' && activity.type != 'Swim';
-    }
-
-    return activity.type == type;
   }
 
   Widget _loading(String message) {
