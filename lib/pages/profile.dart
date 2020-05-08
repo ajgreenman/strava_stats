@@ -120,12 +120,15 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() {
       _filters[type] = !_filters[type];
     });
-    _activities.where((activity) => _matchesType(activity, type)).forEach((activity) {
-      if(_filters[type]) {
-        listModel.insert(_activities.indexOf(activity), activity);
-      } else {
-        listModel.removeAt(listModel.indexOf(activity));
-      }
+    
+    listModel.clear();
+
+    _activities.forEach((activity) {
+      _filters.forEach((key, value) {
+        if(value &&_matchesType(activity, key)) {
+          listModel.add(activity);
+        }
+      });
     });
   }
 

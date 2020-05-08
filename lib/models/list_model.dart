@@ -9,6 +9,18 @@ class ListModel {
 
   AnimatedListState get _animatedList => listKey.currentState;
 
+  add(SummaryActivity activity) {
+    activities.add(activity);
+    _animatedList.insertItem(activities.length - 1);
+  }
+
+  clear() {
+    for(int i = activities.length - 1; i >= 0; i--) {
+      _animatedList.removeItem(i, (context, animation) => ActivityTile(activity: activities[i], animation: animation));
+    }
+    activities.clear();
+  }
+
   insert(int index, SummaryActivity activity) {
     activities.insert(index, activity);
     _animatedList.insertItem(index);
