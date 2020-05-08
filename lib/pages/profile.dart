@@ -49,9 +49,10 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Map<String, bool> _filters = <String, bool>{
-    'Run': false,
-    'Ride': false,
-    'Swim': false,
+    'Run': true,
+    'Ride': true,
+    'Swim': true,
+    'Other': true,
   };
 
   bool _hasActivities() {
@@ -116,14 +117,24 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   _changeFilterState(String type) {
-    listModel = ListModel(_listKey, _activities);
-    _filters[type] = !_filters[type];
-
-    _activities.where((activity) => activity.type != type).forEach((activity) {
+    setState(() {
+      _filters[type] = !_filters[type];
+    });
+    _activities.where((activity) => _matchesType(activity, type)).forEach((activity) {
       if(_filters[type]) {
+        listModel.insert(_activities.indexOf(activity), activity);
+      } else {
         listModel.removeAt(listModel.indexOf(activity));
       }
     });
+  }
+
+  bool _matchesType(SummaryActivity activity, String type) {
+    if(type == 'Other') {
+      return activity.type != 'Run' && activity.type != 'Ride' && activity.type != 'Swim';
+    }
+
+    return activity.type == type;
   }
 
   Widget _loading(String message) {

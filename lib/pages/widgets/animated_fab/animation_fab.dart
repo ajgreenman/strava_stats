@@ -46,8 +46,9 @@ class _AnimatedFabState extends State<AnimatedFab> with SingleTickerProviderStat
             children: [
               _buildExpandedBackground(),
               _buildOption(MdiIcons.run, 'Run', 14 / 9 * math.pi),
-              _buildOption(MdiIcons.bike, 'Ride', 11 / 9 * math.pi),
-              _buildOption(MdiIcons.swim, 'Swim', 8 / 9 * math.pi),
+              _buildOption(MdiIcons.bike, 'Ride', 12 / 9 * math.pi),
+              _buildOption(MdiIcons.swim, 'Swim', 10 / 9 * math.pi),
+              _buildOption(MdiIcons.biathlon, 'Other', 8 / 9 * math.pi),
               _buildFabCore()
             ],
           );
