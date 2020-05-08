@@ -29,7 +29,7 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
 
     _currentSort = 'Date';
-    _currentSortDirection = 'Descending';
+    _currentSortDirection = true;
 
     widget.stravaService.getAllActivities().then((activities) {
       setState(() {
@@ -60,13 +60,8 @@ class _ProfilePageState extends State<ProfilePage> {
     'Time'
   ];
 
-  var _sortDirections = [
-    'Ascending',
-    'Descending'
-  ];
-
   String _currentSort;
-  String _currentSortDirection;
+  bool _currentSortDirection;
 
   bool _hasActivities() {
     if(_activities == null) {
@@ -92,7 +87,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     Row(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
+                          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                           child: DropdownButton<String>(
                             value: _currentSort,
                             icon: Icon(Icons.arrow_drop_down_circle, color: Colors.deepOrange,),
@@ -109,23 +104,14 @@ class _ProfilePageState extends State<ProfilePage> {
                             },
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: DropdownButton<String>(
-                            value: _currentSortDirection,
-                            icon: Icon(Icons.arrow_drop_down_circle, color: Colors.deepOrange,),
-                            items: _sortDirections.map((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                            onChanged: (String selection) {
-                              setState(() {
-                                _currentSortDirection = selection;
-                              });
-                            },
+                        ButtonTheme(
+                          child: FlatButton(
+                            color: Colors.deepOrange,
+                            onPressed: _changeSortState,
+                            child:  Icon(_currentSortDirection ? Icons.arrow_downward : Icons.arrow_upward, color: Colors.white),
                           ),
+                          minWidth: 0,
+                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         )
                       ]
                     ),
@@ -176,28 +162,28 @@ class _ProfilePageState extends State<ProfilePage> {
   int _sortActivities(SummaryActivity a, SummaryActivity b) {
     switch(_currentSort) {
       case 'Date':
-          if(_currentSortDirection == 'Descending') {
+          if(_currentSortDirection) {
             return b.startDate.millisecondsSinceEpoch.compareTo(a.startDate.millisecondsSinceEpoch);
           } else {
             return a.startDate.millisecondsSinceEpoch.compareTo(b.startDate.millisecondsSinceEpoch);
           }
         break;
       case 'Distance':
-        if(_currentSortDirection == 'Descending') {
+        if(_currentSortDirection) {
           return b.distance.compareTo(a.distance);
         } else {
           return a.distance.compareTo(b.distance);
         }
         break;
       case 'Elevation':
-        if(_currentSortDirection == 'Descending') {
+        if(_currentSortDirection) {
           return b.totalElevationGain.compareTo(a.totalElevationGain);
         } else {
           return a.totalElevationGain.compareTo(b.totalElevationGain);
         }
         break;
       case 'Time':
-        if(_currentSortDirection == 'Descending') {
+        if(_currentSortDirection) {
           return b.movingTime.compareTo(a.movingTime);
         } else {
           return a.movingTime.compareTo(b.movingTime);
@@ -226,6 +212,12 @@ class _ProfilePageState extends State<ProfilePage> {
   _changeFilterState(String type) {
     setState(() {
       _filters[type] = !_filters[type];
+    });
+  }
+
+  _changeSortState() {
+    setState(() {
+      _currentSortDirection = !_currentSortDirection;
     });
   }
 
