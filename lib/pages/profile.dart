@@ -84,37 +84,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 Column(
                   children: [
                     ProfileBar(athlete: _athlete),
-                    Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                          child: DropdownButton<String>(
-                            value: _currentSort,
-                            icon: Icon(Icons.arrow_drop_down_circle, color: Colors.deepOrange,),
-                            items: _sorts.map((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                            onChanged: (String selection) {
-                              setState(() {
-                                _currentSort = selection;
-                              });
-                            },
-                          ),
-                        ),
-                        ButtonTheme(
-                          child: FlatButton(
-                            color: Colors.deepOrange,
-                            onPressed: _changeSortState,
-                            child:  Icon(_currentSortDirection ? Icons.arrow_downward : Icons.arrow_upward, color: Colors.white),
-                          ),
-                          minWidth: 0,
-                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        )
-                      ]
-                    ),
+                    _buildSortBar(),
                     Expanded(
                       child: _buildActivityList(),
                     ),
@@ -126,6 +96,44 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildSortBar() {
+    if(!_hasActivities()) {
+      return Container();
+    }
+
+    return Row(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+          child: DropdownButton<String>(
+            value: _currentSort,
+            icon: Icon(Icons.arrow_drop_down_circle, color: Colors.deepOrange,),
+            items: _sorts.map((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
+            onChanged: (String selection) {
+              setState(() {
+                _currentSort = selection;
+              });
+            },
+          ),
+        ),
+        ButtonTheme(
+          child: FlatButton(
+            color: Colors.deepOrange,
+            onPressed: _changeSortState,
+            child:  Icon(_currentSortDirection ? Icons.arrow_downward : Icons.arrow_upward, color: Colors.white),
+          ),
+          minWidth: 0,
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        )
+      ]
     );
   }
 
@@ -202,6 +210,10 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget _buildFilterFab() {
+    if(!_hasActivities()) {
+      return Container();
+    }
+
     return Positioned(
       top: -50.0,
       right: -50.0,
