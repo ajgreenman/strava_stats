@@ -69,7 +69,7 @@ class _ProfilePageState extends State<ProfilePage> {
       child: Scaffold(
         backgroundColor: Colors.white,
         body: Center(
-          child: _isLoading ?  _loading('Loading your profile...') : Container(
+          child: _isLoading ?  _loading('loading your profile...') : Container(
             child: Stack(
               children: [
                 Column(

@@ -59,7 +59,6 @@ class _HomePageState extends State<HomePage> {
       return;
     }
 
-    print('Logging in to strava');
     _stravaService.login().then((result) {
       setState(() {
         _isLoggedIn = result;
@@ -72,7 +71,6 @@ class _HomePageState extends State<HomePage> {
       return;
     }
 
-    print('Logging out of strava');
     _stravaService.logout().then((_) {
       setState(() {
         _isLoggedIn = false;

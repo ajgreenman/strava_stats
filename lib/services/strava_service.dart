@@ -10,7 +10,6 @@ class StravaService {
 
   Future<bool> login() async {
     var result = await _strava.oauth(clientId, scope, clientSecret, 'auto');
-    print(result);
     return result;
   }
 
@@ -20,7 +19,7 @@ class StravaService {
 
   Future<bool> isLoggedIn() async {
     var token = await _strava.getStoredToken();
-    return token != null;
+    return token != null && token.tokenType != null;
   }
 
   Future<DetailedAthlete> getAthlete() async {
