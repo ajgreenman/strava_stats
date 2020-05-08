@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:strava_flutter/Models/activity.dart';
 import 'package:strava_flutter/Models/detailedAthlete.dart';
-import 'package:strava_flutter/Models/stats.dart';
 import 'package:strava_stats/models/list_model.dart';
 import 'package:strava_stats/pages/widgets/activity_list/activity_tile.dart';
 import 'package:strava_stats/pages/widgets/animated_fab/animation_fab.dart';
@@ -125,19 +124,6 @@ class _ProfilePageState extends State<ProfilePage> {
         listModel.removeAt(listModel.indexOf(activity));
       }
     });
-  }
-
-  Widget _buildActivityLabel(String label, ActivityTotals activity) {
-    return Padding(
-      padding: const EdgeInsets.all(4.0),
-      child: Text(label + ': ' + activity.count.toStringAsFixed(0),
-        style: TextStyle(
-          fontSize: 11,
-          height: 1.1,
-          fontWeight: FontWeight.w300
-        ),
-      ),
-    );
   }
 
   Widget _loading(String message) {
