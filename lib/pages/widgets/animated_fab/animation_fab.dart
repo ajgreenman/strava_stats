@@ -20,6 +20,8 @@ class _AnimatedFabState extends State<AnimatedFab> with SingleTickerProviderStat
   final double expandedSize = 170.0;
   final double hiddenSize = 20.0;
 
+  bool _enableFilters = false;
+
   @override
   void initState() {
     super.initState();
@@ -80,7 +82,7 @@ class _AnimatedFabState extends State<AnimatedFab> with SingleTickerProviderStat
         child: Padding(
           padding: EdgeInsets.only(top: 8.0),
           child: IconButton(
-            onPressed: () => _onIconClick(type),
+            onPressed: _enableFilters ? () => _onIconClick(type) : null,
             icon: Transform.rotate(
               angle: -angle,
               child: Icon(icon, color: widget.activeIcons[type] ? Colors.black : Colors.white),
@@ -129,11 +131,13 @@ class _AnimatedFabState extends State<AnimatedFab> with SingleTickerProviderStat
   open() {
     if(_animationController.isDismissed) {
       _animationController.forward();
+      _enableFilters = true;
     }
   }
 
   close() {
     if(_animationController.isCompleted) {
+      _enableFilters = false;
       _animationController.reverse();
     }
   }

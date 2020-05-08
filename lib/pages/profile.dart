@@ -77,7 +77,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ],
                 ),
-                _buildSortFab(),
                 _buildFilterFab(),
               ]
             ),
@@ -119,14 +118,6 @@ class _ProfilePageState extends State<ProfilePage> {
     }
 
     return activity.type;
-  }
-
-  Widget _buildSortFab() {
-    return Positioned(
-      top: -50.0,
-      right: 30.0,
-      child: AnimatedFab(onClick: _changeSortState, openIcon: MdiIcons.sort, activeIcons: _filters)
-    );
   }
 
   Widget _buildFilterFab() {
