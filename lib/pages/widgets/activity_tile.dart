@@ -36,7 +36,7 @@ class ActivityTile extends StatelessWidget {
                         children: [
                           Expanded(flex: 1, child: _getIcon(activity.type)),
                           Expanded(flex: 8, child: _activityMain()),
-                          Expanded(flex: 3, child: _activityStats()),
+                          Expanded(flex: 3, child: activity.buildStatsView()),
                         ],
                       ),
                     ),
@@ -51,7 +51,6 @@ class ActivityTile extends StatelessWidget {
   }
 
   Widget _activityMain() {
-    print(activity.startDate);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -63,27 +62,6 @@ class ActivityTile extends StatelessWidget {
           ),
         ),
         Text(' ' + DateFormat('MM-dd-yyyy').format(activity.startDate)),
-      ]
-    );
-  }
-
-  Widget _activityStats() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildActivityStat(MdiIcons.ruler, activity.distanceInMiles.toStringAsFixed(2) + ' mi'),
-        _buildActivityStat(MdiIcons.imageFilterHdr, _convertToFeet(activity.totalElevationGain).toStringAsFixed(0) + ' ft'),
-        _buildActivityStat(MdiIcons.timer, _prettyTime(activity.pace)),
-        _buildActivityStat(MdiIcons.timerSand, _prettyTime(activity.movingTime)),
-      ],
-    );
-  }
-
-  Widget _buildActivityStat(IconData icon, String text) {
-    return Row(
-      children: [
-        Icon(icon, size: 12),
-        Text(' ' + text),
       ]
     );
   }
@@ -104,23 +82,5 @@ class ActivityTile extends StatelessWidget {
       default:
         return Icon(MdiIcons.biathlon);
     }
-  }
-
-  String _prettyTime(int elapsedTime) {
-    print(elapsedTime);
-    int hours = elapsedTime ~/ 3600;
-    int minutes = elapsedTime ~/ 60 % 60;
-    int seconds = elapsedTime % 60;
-
-    String time = minutes.toStringAsFixed(0) + 'm ' + seconds.toStringAsFixed(0) + 's';
-
-    if(hours > 0) {
-      time = hours.toStringAsFixed(0) + 'h ' + time;
-    }
-    return time;
-  }
-
-  double _convertToFeet(double meters) {
-    return meters * 3.28084;
   }
 }

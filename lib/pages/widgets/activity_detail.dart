@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:strava_flutter/Models/activity.dart';
 import 'package:strava_stats/services/strava_service.dart';
+import 'package:strava_stats/extensions/activity_extension.dart';
 
 class ActivityDetail extends StatefulWidget {
   final SummaryActivity activity;
@@ -38,8 +39,13 @@ class _ActivityDetailState extends State<ActivityDetail> {
     return SimpleDialog(
       backgroundColor: Colors.white,
       title: Text(widget.activity.name),
+      contentPadding: EdgeInsets.all(5.0),
       children: [
-        Center(child: Text('Feature coming soon...')),
+        widget.activity.buildStatsView(),
+        Padding(
+          padding: EdgeInsets.only(top: 10.0),
+          child: Text('More details coming soon...')
+        ),
       ],
     );
   }

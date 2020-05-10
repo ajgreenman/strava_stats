@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:strava_flutter/Models/activity.dart';
 import 'package:strava_flutter/Models/detailedAthlete.dart';
@@ -20,10 +21,12 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   DetailedAthlete _athlete = DetailedAthlete();
   List<SummaryActivity> _activities = List<SummaryActivity>();
-  bool _isLoading = true;
+  bool _isLoadingProfile = true, _isLoadingActivities = true;
 
   SortDirection sortDirection = SortDirection.descending;
   SortType activeSort = SortType.date;
+
+  DateTime _start, _end;
 
   @override
   void initState() {
@@ -32,17 +35,15 @@ class _ProfilePageState extends State<ProfilePage> {
     _currentSort = 'Date';
     _currentSortDirection = true;
 
-    widget.stravaService.getActivities(DateTime(2019, 9, 1), DateTime.now()).then((activities) {
-      setState(() {
-        _activities = activities;
-        _isLoading = _athlete == null;
-      });
-    });
+    _start = DateTime(2020, 1, 1);
+    _end = DateTime.now();
+
+    _refreshActivities();
 
     widget.stravaService.getAthlete().then((athlete) {
       setState(() {
         _athlete = athlete;
-        _isLoading = _athlete == null;
+        _isLoadingProfile = _athlete == null;
       });
     });
   }
@@ -80,15 +81,15 @@ class _ProfilePageState extends State<ProfilePage> {
       child: Scaffold(
         backgroundColor: Colors.white,
         body: Center(
-          child: _isLoading ?  _loading('loading your profile...') : Container(
+          child: _isLoadingProfile ?  _loading('loading your profile...') : Container(
             child: Stack(
               children: [
                 Column(
                   children: [
                     ProfileBar(athlete: _athlete),
-                    _buildSortBar(),
+                    _buildFilterSortBar(context),
                     Expanded(
-                      child: _buildActivityList(),
+                      child: _isLoadingActivities ? _loading('Loading your activities...') : _buildActivityList(),
                     ),
                   ],
                 ),
@@ -101,49 +102,119 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget _buildSortBar() {
-    if(!_hasActivities()) {
+  Widget _buildFilterSortBar(BuildContext context) {
+    if(_isLoadingActivities) {
       return Container();
     }
 
-    return Row(
+    return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-          child: DropdownButton<String>(
-            value: _currentSort,
-            icon: Icon(Icons.arrow_drop_down_circle, color: Colors.deepOrange,),
-            items: _sorts.map((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
-            onChanged: (String selection) {
-              setState(() {
-                _currentSort = selection;
-              });
-            },
-          ),
+        Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 16.0, right: 8.0),
+              child: DropdownButton<String>(
+                value: _currentSort,
+                icon: Icon(Icons.arrow_drop_down_circle, color: Colors.deepOrange,),
+                items: _sorts.map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (String selection) {
+                  setState(() {
+                    _currentSort = selection;
+                  });
+                },
+              ),
+            ),
+            ButtonTheme(
+              child: FlatButton(
+                color: Colors.deepOrange,
+                onPressed: _changeSortState,
+                child:  Icon(_currentSortDirection ? Icons.arrow_downward : Icons.arrow_upward, color: Colors.white),
+              ),
+              minWidth: 0,
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            ),
+          ]
         ),
-        ButtonTheme(
-          child: FlatButton(
-            color: Colors.deepOrange,
-            onPressed: _changeSortState,
-            child:  Icon(_currentSortDirection ? Icons.arrow_downward : Icons.arrow_upward, color: Colors.white),
-          ),
-          minWidth: 0,
-          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: ButtonTheme(
+                child: OutlineButton(
+                  color: Colors.white,
+                  onPressed: () => _setStartDate(context),
+                  child: Text(DateFormat('MM-dd-yyyy').format(_start)),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text('to'),
+            ),
+            ButtonTheme(
+              child: OutlineButton(
+                color: Colors.white,
+                onPressed: () => _setEndDate(context),
+                child: Text(DateFormat('MM-dd-yyyy').format(_end)),
+              ),
+            ),
+          ],
         )
       ]
     );
   }
 
-  Widget _buildActivityList() {
-    if(!_hasActivities()) {
-      return _loading('Loading your activities...');
-    }
+  _setStartDate(BuildContext context) {
+    showDatePicker(
+      context: context,
+      initialDate: _start,
+      firstDate: DateTime(2017),
+      lastDate: DateTime.now()
+    ).then((date) {
+      if(date != null && date.isBefore(_end)) {
+        setState(() {
+          _start = date;
+        });
+        _refreshActivities();
+      }
+    });
+  }
 
+  _setEndDate(BuildContext context) {
+    showDatePicker(
+      context: context,
+      initialDate: _end,
+      firstDate: DateTime(2017),
+      lastDate: DateTime.now(),
+    ).then((date) {
+      if(date != null && date.isAfter(_start)) {
+        setState(() {
+          _end = date;
+        });
+        _refreshActivities();
+      }
+    });
+  }
+
+  _refreshActivities() {
+    setState(() {
+      _isLoadingActivities = true;
+    });
+
+    widget.stravaService.getActivities(_start, _end).then((activities) {
+      setState(() {
+        _activities = activities;
+        _isLoadingActivities = !_hasActivities();
+      });
+    });
+  }
+
+  Widget _buildActivityList() {
     var activeActivities = _getActiveActivities();
     
     if(activeActivities == null || activeActivities.length < 1) {
