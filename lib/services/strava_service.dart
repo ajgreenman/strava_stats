@@ -9,8 +9,7 @@ class StravaService {
   final scope = 'activity:read_all,profile:read_all';
 
   Future<bool> login() async {
-    var result = await _strava.oauth(clientId, scope, clientSecret, 'auto');
-    return result;
+    return await _strava.oauth(clientId, scope, clientSecret, 'auto');
   }
 
   logout() async {
@@ -24,6 +23,10 @@ class StravaService {
 
   Future<DetailedAthlete> getAthlete() async {
     return await _strava.getLoggedInAthlete();
+  }
+
+  Future<DetailedActivity> getActivityById(int id) async {
+    return await _strava.getActivityById(id.toString());
   }
 
   Future<Stats> getAthleteStats(int athleteId) async {

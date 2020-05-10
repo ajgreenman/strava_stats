@@ -6,6 +6,7 @@ import 'package:strava_stats/pages/widgets/activity_tile.dart';
 import 'package:strava_stats/pages/widgets/animation_fab.dart';
 import 'package:strava_stats/pages/widgets/profile_bar.dart';
 import 'package:strava_stats/services/strava_service.dart';
+import 'package:strava_stats/extensions/activity_extension.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({this.stravaService}) : super();
@@ -31,7 +32,7 @@ class _ProfilePageState extends State<ProfilePage> {
     _currentSort = 'Date';
     _currentSortDirection = true;
 
-    widget.stravaService.getAllActivities().then((activities) {
+    widget.stravaService.getActivities(DateTime(2019, 9, 1), DateTime.now()).then((activities) {
       setState(() {
         _activities = activities;
         _isLoading = _athlete == null;
@@ -57,6 +58,7 @@ class _ProfilePageState extends State<ProfilePage> {
     'Date',
     'Distance',
     'Elevation',
+    'Pace',
     'Time'
   ];
 
@@ -153,7 +155,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
     return AnimatedList(
       itemBuilder: (context, index, animation) {
-        return ActivityTile(activity: activeActivities[index], animation: animation);
+        return ActivityTile(activity: activeActivities[index], animation: animation, stravaService: widget.stravaService);
       },
       initialItemCount: activeActivities.length
     );
@@ -188,6 +190,13 @@ class _ProfilePageState extends State<ProfilePage> {
           return b.totalElevationGain.compareTo(a.totalElevationGain);
         } else {
           return a.totalElevationGain.compareTo(b.totalElevationGain);
+        }
+        break;
+      case 'Pace':
+        if(_currentSortDirection) {
+          return b.pace.compareTo(a.pace);
+        } else {
+          return a.pace.compareTo(b.pace);
         }
         break;
       case 'Time':

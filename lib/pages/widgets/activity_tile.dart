@@ -2,12 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:strava_flutter/Models/activity.dart';
+import 'package:strava_stats/services/strava_service.dart';
+import 'package:strava_stats/extensions/activity_extension.dart';
+
+import 'activity_detail.dart';
 
 class ActivityTile extends StatelessWidget {
   final SummaryActivity activity;
   final Animation<double> animation;
+  final StravaService stravaService;
 
-  const ActivityTile({Key key, this.activity, this.animation});
+  const ActivityTile({Key key, this.activity, this.animation, this.stravaService});
 
   @override
   Widget build(BuildContext context) {
@@ -17,28 +22,69 @@ class ActivityTile extends StatelessWidget {
         sizeFactor: animation,
         child: Padding(
           padding: const EdgeInsets.only(bottom: 10),
-          child: ListTile(
-            dense: true,
-            title: Center(
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Expanded(flex: 1, child: _getIcon(activity.type)),
-                        Expanded(flex: 8, child: _activityMain()),
-                        Expanded(flex: 3, child: _activityStats()),
-                      ],
+          child: InkWell(
+            onTap: () => showDialog(context: context, child: ActivityDetail(activity, stravaService)),
+            child: ListTile(
+              dense: true,
+              title: Center(
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Expanded(flex: 1, child: _getIcon(activity.type)),
+                          Expanded(flex: 8, child: _activityMain()),
+                          Expanded(flex: 3, child: _activityStats()),
+                        ],
+                      ),
                     ),
-                  ),
-                ]
+                  ]
+                ),
               ),
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget _activityMain() {
+    print(activity.startDate);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(activity.name,
+          style: TextStyle(
+            fontSize: 14,
+            height: 1.1,
+            fontWeight: FontWeight.w700
+          ),
+        ),
+        Text(' ' + DateFormat('MM-dd-yyyy').format(activity.startDate)),
+      ]
+    );
+  }
+
+  Widget _activityStats() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildActivityStat(MdiIcons.ruler, activity.distanceInMiles.toStringAsFixed(2) + ' mi'),
+        _buildActivityStat(MdiIcons.imageFilterHdr, _convertToFeet(activity.totalElevationGain).toStringAsFixed(0) + ' ft'),
+        _buildActivityStat(MdiIcons.timer, _prettyTime(activity.pace)),
+        _buildActivityStat(MdiIcons.timerSand, _prettyTime(activity.movingTime)),
+      ],
+    );
+  }
+
+  Widget _buildActivityStat(IconData icon, String text) {
+    return Row(
+      children: [
+        Icon(icon, size: 12),
+        Text(' ' + text),
+      ]
     );
   }
 
@@ -60,43 +106,8 @@ class ActivityTile extends StatelessWidget {
     }
   }
 
-  Widget _activityStats() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildActivityStat(MdiIcons.ruler, _convertToMiles(activity.distance).toStringAsFixed(2) + ' mi'),
-        _buildActivityStat(MdiIcons.imageFilterHdr, _convertToFeet(activity.totalElevationGain).toStringAsFixed(0) + ' ft'),
-        _buildActivityStat(MdiIcons.timer, _prettyTime(activity.movingTime)),
-      ],
-    );
-  }
-
-  Widget _buildActivityStat(IconData icon, String text) {
-    return Row(
-      children: [
-        Icon(icon, size: 12),
-        Text(' ' + text),
-      ]
-    );
-  }
-
-  Widget _activityMain() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(activity.name,
-          style: TextStyle(
-            fontSize: 14,
-            height: 1.1,
-            fontWeight: FontWeight.w700
-          ),
-        ),
-        Text(' ' + DateFormat('MM-dd-yyyy').format(activity.startDate)),
-      ]
-    );
-  }
-
   String _prettyTime(int elapsedTime) {
+    print(elapsedTime);
     int hours = elapsedTime ~/ 3600;
     int minutes = elapsedTime ~/ 60 % 60;
     int seconds = elapsedTime % 60;
@@ -107,10 +118,6 @@ class ActivityTile extends StatelessWidget {
       time = hours.toStringAsFixed(0) + 'h ' + time;
     }
     return time;
-  }
-
-  double _convertToMiles(double meters) {
-    return meters * 0.000621371;
   }
 
   double _convertToFeet(double meters) {
