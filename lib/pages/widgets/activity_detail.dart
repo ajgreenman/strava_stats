@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:strava_flutter/Models/activity.dart';
 import 'package:strava_stats/services/strava_service.dart';
-import 'package:strava_stats/extensions/activity_extension.dart';
+import 'package:strava_stats/extensions/activity_extensions.dart';
 
 class ActivityDetail extends StatefulWidget {
   final SummaryActivity activity;

@@ -7,7 +7,7 @@ import 'package:strava_stats/pages/widgets/activity_tile.dart';
 import 'package:strava_stats/pages/widgets/animation_fab.dart';
 import 'package:strava_stats/pages/widgets/profile_bar.dart';
 import 'package:strava_stats/services/strava_service.dart';
-import 'package:strava_stats/extensions/activity_extension.dart';
+import 'package:strava_stats/extensions/activity_extensions.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({this.stravaService}) : super();
@@ -22,9 +22,6 @@ class _ProfilePageState extends State<ProfilePage> {
   DetailedAthlete _athlete = DetailedAthlete();
   List<SummaryActivity> _activities = List<SummaryActivity>();
   bool _isLoadingProfile = true, _isLoadingActivities = true;
-
-  SortDirection sortDirection = SortDirection.descending;
-  SortType activeSort = SortType.date;
 
   DateTime _start, _end;
 
@@ -174,7 +171,8 @@ class _ProfilePageState extends State<ProfilePage> {
       context: context,
       initialDate: _start,
       firstDate: DateTime(2017),
-      lastDate: DateTime.now()
+      lastDate: DateTime.now(),
+      
     ).then((date) {
       if(date != null && date.isBefore(_end)) {
         setState(() {
@@ -325,16 +323,4 @@ class _ProfilePageState extends State<ProfilePage> {
       ],
     );
   }
-}
-
-enum SortDirection {
-    ascending,
-    descending
-}
-
-enum SortType {
-  date,
-  distance,
-  elevation,
-  time
 }

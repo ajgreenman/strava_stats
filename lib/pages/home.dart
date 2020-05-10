@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:strava_stats/pages/login.dart';
 import 'package:strava_stats/pages/profile.dart';
+import 'package:strava_stats/pages/totals.dart';
 import 'package:strava_stats/services/strava_service.dart';
 
 class HomePage extends StatefulWidget {
@@ -34,7 +35,7 @@ class _HomePageState extends State<HomePage> {
 
     _pages = [
       ProfilePage(stravaService: _stravaService),
-      ProfilePage(stravaService: _stravaService)
+      TotalsScreen(stravaService: _stravaService)
     ];
   }
     
@@ -84,16 +85,10 @@ class _HomePageState extends State<HomePage> {
       currentIndex: _currentIndex,
       onTap: _navigateTo,
       items: [
-        _buildBottomNavigationBarItem(Icons.list, 'All Activities'),
+        _buildBottomNavigationBarItem(Icons.list, 'Activity List'),
         _buildBottomNavigationBarItem(Icons.table_chart, 'Activity Totals'),
       ],
     );
-  }
-
-  _navigateTo(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
   }
 
   BottomNavigationBarItem _buildBottomNavigationBarItem(IconData icon, String label) {
@@ -108,6 +103,12 @@ class _HomePageState extends State<HomePage> {
       ),
       title: Text(label),
     );
+  }
+
+  _navigateTo(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
   }
 
   _loginToStrava() async {

@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:strava_flutter/Models/activity.dart';
 import 'package:strava_stats/services/strava_service.dart';
-import 'package:strava_stats/extensions/activity_extension.dart';
+import 'package:strava_stats/extensions/activity_extensions.dart';
 
 import 'activity_detail.dart';
 

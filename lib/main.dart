@@ -5,5 +5,10 @@ void main() async {
   runApp(MaterialApp(
     title: 'Strava Stats',
     home: HomePage(),
+    theme: ThemeData(
+      primaryColor: Colors.deepOrange,
+      accentColor: Colors.deepOrange,
+      primarySwatch: Colors.deepOrange
+    ),
   ));
 }
