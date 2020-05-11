@@ -27,7 +27,7 @@ class _ProfileBarState extends State<ProfileBar> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(widget.athlete.firstname + ' ' + widget.athlete.lastname,
+              Text(_getName(),
                 style: TextStyle(
                   fontSize: 18,
                   height: 1.1,
@@ -47,9 +47,23 @@ class _ProfileBarState extends State<ProfileBar> {
     );
   }
 
+  String _getName() {
+    String name = '';
+
+    if(widget.athlete.firstname != null) {
+      name += widget.athlete.firstname;
+    }
+
+    if(widget.athlete.lastname != null) {
+      name += ' ' + widget.athlete.lastname;
+    }
+
+    return name;
+  }
+
   String _getLocation() {
     String location = '';
-    
+
     if(widget.athlete.city != null && widget.athlete.city.isNotEmpty) {
       location += widget.athlete.city;
 

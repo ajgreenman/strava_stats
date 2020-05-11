@@ -5,7 +5,17 @@ import 'package:strava_stats/helpers/measurement_helper.dart';
 import 'package:strava_stats/helpers/time_helper.dart';
 
 extension ActivityExtensions on SummaryActivity {
-  int get pace => (this.movingTime / this.distanceInMiles).ceil();
+  int get pace {
+    if(this.movingTime == null || this.movingTime <= 0) {
+      return 0;
+    }
+
+    if(this.distanceInMiles == null || this.distanceInMiles <= 0) {
+      return 0;
+    }
+    
+    return (this.movingTime / this.distanceInMiles).ceil();
+  } 
   double get distanceInMiles => this.distance * 0.000621371;
 
   Widget buildStatsView() {
