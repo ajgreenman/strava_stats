@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "281246973237",
+    "firebase_url": "https://strava-stats-60c5d.firebaseio.com",
+    "project_id": "strava-stats-60c5d",
+    "storage_bucket": "strava-stats-60c5d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:281246973237:android:6a7da7ebf47f8ca903607c",
+        "android_client_info": {
+          "package_name": "com.greenman.strava_stats"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "281246973237-8tkjafbrvu615g2mkrm3k8u7e28iab55.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJci8VQmMvfVxj4Wo0ro4UN4PCpE14VEg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "281246973237-8tkjafbrvu615g2mkrm3k8u7e28iab55.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "281246973237-mfnpd80vvrtjtrue56g8ncu1pbqtp0km.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.greenman.stravaStats"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
