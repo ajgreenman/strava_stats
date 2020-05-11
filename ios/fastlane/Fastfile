@@ -6,7 +6,7 @@ default_platform(:ios)
 TEMP_KEYCHAIN_NAME_DEFAULT = "fastlane_flutter"
 TEMP_KEYCHAN_PASSWORD_DEFAULT = "temppassword"
 APP_ID = "1:281246973237:ios:b59a874163fc37a903607c"
-FIREBASE_TOKEN = "1//0f713DHc-mXpkCgYIARAAGA8SNwF-L9IrPBa8qo8YO9LqAl2kDRZPPQRAGVrbHwTL6dCTePgqO2YpnTgvjYYOo9exy53BJRKakK0"
+FIREBASE_TOKEN = "1//0fkD5PaN39-eCCgYIARAAGA8SNwF-L9Iru_cgX28F2G7zFyk9KEeLvu8RPhQx2-HQYcTRR2fTk79UH_1E8h1YvEZ3ngZVtMwd-pc"
 
 # Remove the temporary keychain, if it exists
 def delete_temp_keychain(name)
@@ -65,10 +65,10 @@ platform :ios do
     # Upload to test flight or AppStore depending on caller parameters
     firebase_app_distribution(
           app: APP_ID,
-          groups: "testers",
+          release_notes: "v0.1",
           firebase_cli_path: "/usr/local/bin/firebase",
           firebase_cli_token: FIREBASE_TOKEN,
-          ipa_path: "./build/Runner/Runner.ipa"
+          ipa_path: "./build/Runner/Strava Stats.ipa"
       )
   end
 end

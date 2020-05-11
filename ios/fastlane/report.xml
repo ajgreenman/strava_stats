@@ -5,42 +5,17 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: update_fastlane" time="3.245149">
+      <testcase classname="fastlane.lanes" name="0: update_fastlane" time="3.013411">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="1: default_platform" time="0.002077">
+      <testcase classname="fastlane.lanes" name="1: default_platform" time="0.00208">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="2: automatic_code_signing" time="0.116085">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="3: create_keychain" time="0.088745">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="4: is_ci" time="0.001953">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="5: match" time="4.712826">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="6: build_ios_app" time="146.809338">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="7: delete_keychain" time="0.039589">
+      <testcase classname="fastlane.lanes" name="2: firebase_app_distribution" time="21.877103">
         
       </testcase>
     

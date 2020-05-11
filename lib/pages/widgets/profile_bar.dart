@@ -34,7 +34,7 @@ class _ProfileBarState extends State<ProfileBar> {
                   fontWeight: FontWeight.w700
                 ),
               ),
-              Text(widget.athlete.city + ', ' + widget.athlete.state,
+              Text(_getLocation(),
                 style: TextStyle(
                   fontSize: 12,
                   height: 1.1,
@@ -45,5 +45,19 @@ class _ProfileBarState extends State<ProfileBar> {
         ),
       ],
     );
+  }
+
+  String _getLocation() {
+    String location = '';
+    
+    if(widget.athlete.city != null && widget.athlete.city.isNotEmpty) {
+      location += widget.athlete.city;
+
+      if(widget.athlete.state != null && widget.athlete.state.isNotEmpty) {
+        location += ', ' + widget.athlete.state;
+      }
+    }
+
+    return location;
   }
 }

@@ -1,14 +1,13 @@
 default_platform(:android)
 
 APP_ID = "1:281246973237:android:6a7da7ebf47f8ca903607c"
-FIREBASE_TOKEN = "1//0f713DHc-mXpkCgYIARAAGA8SNwF-L9IrPBa8qo8YO9LqAl2kDRZPPQRAGVrbHwTL6dCTePgqO2YpnTgvjYYOo9exy53BJRKakK0"
+FIREBASE_TOKEN = "1//04RJhuys8KbynCgYIARAAGAQSNwF-L9IrSm212S3ZJcnMmpbco8S_s3CHa-qklZ1GbEufpSgEX3gUhtss-nvNdPGYIQa7GhybFdI"
 
 platform :android do
   desc "Deploy a new beta"
   lane :distribute_beta do
       firebase_app_distribution(
           app: APP_ID,
-          groups: "testers",
           firebase_cli_path: "/usr/local/bin/firebase",
           firebase_cli_token: FIREBASE_TOKEN,
           apk_path: "../build/app/outputs/apk/debug/app-debug.apk"
