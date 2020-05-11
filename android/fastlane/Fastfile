@@ -8,6 +8,7 @@ platform :android do
   lane :distribute_beta do
       firebase_app_distribution(
           app: APP_ID,
+          groups: "Android",
           firebase_cli_path: "/usr/local/bin/firebase",
           firebase_cli_token: FIREBASE_TOKEN,
           apk_path: "../build/app/outputs/apk/debug/app-debug.apk"

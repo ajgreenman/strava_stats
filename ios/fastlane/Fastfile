@@ -65,6 +65,7 @@ platform :ios do
     # Upload to test flight or AppStore depending on caller parameters
     firebase_app_distribution(
           app: APP_ID,
+          groups: "iOS",
           release_notes: "v0.1",
           firebase_cli_path: "/usr/local/bin/firebase",
           firebase_cli_token: FIREBASE_TOKEN,
