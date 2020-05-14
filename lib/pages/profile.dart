@@ -232,7 +232,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   List<SummaryActivity> _getActiveActivities() {
     var activeActivities =  _activities.where((activity) => _filters[_getType(activity)]).toList();
-
+    
     activeActivities.sort((a, b) => _sortActivities(a, b));
 
     return activeActivities;

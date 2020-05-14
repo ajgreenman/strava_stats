@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:strava_stats/pages/login.dart';
 import 'package:strava_stats/pages/profile.dart';
 import 'package:strava_stats/pages/totals.dart';
 import 'package:strava_stats/services/strava_service.dart';
@@ -12,27 +11,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final StravaService _stravaService = StravaService();
-  bool _isLoggedIn = false;
-  bool _isLoading = true;
-  Widget _loginScreen;
   static List<Widget> _pages;
   int _currentIndex;
 
   @override
   initState() {
     super.initState();
-
     _currentIndex = 0;
-
-    _stravaService.isLoggedIn().then((result) {
-      setState(() {
-        _isLoggedIn = result;
-        _isLoading = false;
-      });
-    });
-    
-    _loginScreen = LoginPage(login: () => _loginToStrava());
-
     _pages = [
       ProfilePage(stravaService: _stravaService),
       TotalsScreen(stravaService: _stravaService)
@@ -45,22 +30,8 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text('Strava Stats'),
         backgroundColor: Colors.deepOrange,
-        actions: <Widget>[
-          PopupMenuButton(
-            icon: Icon(Icons.settings),
-            onSelected: (_) {
-              _isLoggedIn ? _logoutFromStrava() : _loginToStrava();
-            },
-            itemBuilder: (BuildContext context) => [
-              PopupMenuItem(
-                child: Text(_isLoggedIn ? 'Log Out' : 'Log In'),
-                value: 1,
-              )
-            ],
-          ),
-        ],
       ),
-      body: _isLoading ? CircularProgressIndicator() : _isLoggedIn ? IndexedStack(index: _currentIndex, children: _pages) : _loginScreen,
+      body: IndexedStack(index: _currentIndex, children: _pages),
       bottomNavigationBar: _buildBottomBar(),
     );
   }
@@ -108,30 +79,6 @@ class _HomePageState extends State<HomePage> {
   _navigateTo(int index) {
     setState(() {
       _currentIndex = index;
-    });
-  }
-
-  _loginToStrava() async {
-    if(_isLoggedIn) {
-      return;
-    }
-
-    _stravaService.login().then((result) {
-      setState(() {
-        _isLoggedIn = result;
-      });
-    });
-  }
-
-  _logoutFromStrava() {
-    if(!_isLoggedIn) {
-      return;
-    }
-
-    _stravaService.logout().then((_) {
-      setState(() {
-        _isLoggedIn = false;
-      });
     });
   }
 }

@@ -38,4 +38,23 @@ extension ActivityExtensions on SummaryActivity {
       ]
     );
   }
+
+
+  Icon getIcon() {
+    switch(this.type) {
+      case 'Run':
+        return Icon(MdiIcons.run);
+      case 'Ride': 
+        return Icon(MdiIcons.bike);
+      case 'Swim':
+        return Icon(MdiIcons.swim);
+      case 'Hike':
+        return Icon(MdiIcons.hiking);
+      case 'Kayaking':
+      case 'Canoe':
+        return Icon(MdiIcons.oar);
+      default:
+        return Icon(MdiIcons.biathlon);
+    }
+  }
 }

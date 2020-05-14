@@ -1,4 +1,4 @@
-update_fastlane
+# update_fastlane
 
 default_platform(:ios)
 
@@ -66,7 +66,7 @@ platform :ios do
     firebase_app_distribution(
           app: APP_ID,
           groups: "iOS",
-          release_notes: "v0.1",
+          release_notes: "v0.2",
           firebase_cli_path: "/usr/local/bin/firebase",
           firebase_cli_token: FIREBASE_TOKEN,
           ipa_path: "./build/Runner/Strava Stats.ipa"

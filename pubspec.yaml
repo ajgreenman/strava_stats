@@ -22,11 +22,13 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  strava_flutter: 1.2.1+57
+  strava_flutter: 1.2.1+58
   intl: 0.16.1
   material_design_icons_flutter: 4.0.5145
   firebase_core: ^0.4.0+9
-
+  google_maps_flutter: ^0.5.19
+  flutter_polyline_points: 0.2.1
+  shared_preferences: '>=0.5.7+2 <2.0.0'
 
 
 dev_dependencies:

@@ -165,8 +165,6 @@ class _TotalsScreenState extends State<TotalsScreen> {
 
   Widget _buildActivityTotals() {
     var activeActivities = _getActiveActivities();
-    
-    
 
     List<Widget> totals = [
       _buildTotals('Total', _activities, false)
@@ -203,6 +201,10 @@ class _TotalsScreenState extends State<TotalsScreen> {
   }
 
   Widget _buildTotals(String title, List<SummaryActivity> activities, bool showTopActivities) {
+    if(activities == null || activities.length <= 0) {
+      return Container();
+    }
+
     List<Widget> stats = [
       Text(title,
         style: TextStyle(

@@ -1,6 +1,7 @@
 import 'package:strava_flutter/Models/activity.dart';
 import 'package:strava_flutter/Models/detailedAthlete.dart';
 import 'package:strava_flutter/Models/stats.dart';
+import 'package:strava_flutter/Models/token.dart';
 import 'package:strava_stats/services/strava_secrets.dart';
 import 'package:strava_flutter/strava.dart';
 
@@ -16,9 +17,8 @@ class StravaService {
     await _strava.deAuthorize();
   }
 
-  Future<bool> isLoggedIn() async {
-    var token = await _strava.getStoredToken();
-    return token != null && token.tokenType != null;
+  Future<Token> isLoggedIn() async {
+    return await _strava.getStoredToken();
   }
 
   Future<DetailedAthlete> getAthlete() async {
