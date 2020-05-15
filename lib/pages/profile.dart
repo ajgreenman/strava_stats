@@ -135,18 +135,6 @@ class _ProfilePageState extends State<ProfilePage> {
               minWidth: 0,
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: ButtonTheme(
-                child: FlatButton(
-                  color: Colors.deepOrange,
-                  onPressed: _refreshActivities,
-                  child: Icon(Icons.refresh, color: Colors.white),
-                ),
-                minWidth: 0,
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              ),
-            ),
           ]
         ),
         Row(
@@ -172,6 +160,18 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Text(DateFormat('MM-dd-yyyy').format(_end)),
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: ButtonTheme(
+                child: FlatButton(
+                  color: Colors.deepOrange,
+                  onPressed: _refreshActivities,
+                  child: Icon(Icons.refresh, color: Colors.white),
+                ),
+                minWidth: 0,
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              ),
+            ),
           ],
         )
       ]
@@ -186,11 +186,15 @@ class _ProfilePageState extends State<ProfilePage> {
       lastDate: DateTime.now(),
       
     ).then((date) {
-      if(date != null && date.isBefore(_end)) {
+      if(date != null) {
         setState(() {
           _start = date;
         });
-        _refreshActivities();
+        if(!date.isBefore(_end)) {
+          setState(() {
+            _end = date.add(Duration(days: 1));
+          });
+        }
       }
     });
   }
@@ -202,11 +206,15 @@ class _ProfilePageState extends State<ProfilePage> {
       firstDate: DateTime(2017),
       lastDate: DateTime.now(),
     ).then((date) {
-      if(date != null && date.isAfter(_start)) {
+      if(date != null) {
         setState(() {
           _end = date;
         });
-        _refreshActivities();
+        if(!date.isAfter(_start)) {
+          setState(() {
+            _start = date.add(Duration(days: -1));
+          });
+        }
       }
     });
   }
@@ -219,7 +227,7 @@ class _ProfilePageState extends State<ProfilePage> {
     widget.stravaService.getActivities(_start, _end).then((activities) {
       setState(() {
         _activities = activities;
-        _isLoadingActivities = !_hasActivities();
+        _isLoadingActivities = false;
       });
     });
   }
