@@ -34,6 +34,7 @@ class StravaService {
   }
 
   Future<List<SummaryActivity>> getActivities(DateTime from, DateTime to) async {
+    print(to);
     return await _strava.getLoggedInAthleteActivities(_getEpoch(to), _getEpoch(from));
   }
   

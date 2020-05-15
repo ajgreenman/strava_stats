@@ -30,7 +30,7 @@ class _ActivityDetailState extends State<ActivityDetail> {
 
     widget.stravaService.getActivityById(widget.activity.id).then((detailedActivity) {
       _detailedActivity = detailedActivity;
-      if(_detailedActivity.map != null && _detailedActivity.map.polyline != null) {
+      if(_detailedActivity.map?.polyline?.isNotEmpty ?? false) {
         PolylinePoints polylinePoints = PolylinePoints();
         var points = polylinePoints.decodePolyline(_detailedActivity.map.polyline);
         var latlngs = points.map((latlng) => LatLng(latlng.latitude, latlng.longitude)).toList();
@@ -109,8 +109,10 @@ class _ActivityDetailState extends State<ActivityDetail> {
     if(_detailedActivity.description != null) {
       children.add(Center(child: Text(_detailedActivity.description, style: TextStyle(fontStyle: FontStyle.italic))));
     }
-
-    children.add(_buildMap());
+    
+    if(_detailedActivity.map?.polyline?.isNotEmpty ?? false) {
+      children.add(_buildMap());
+    }
     children.add(_detailedActivity.buildStatsView());
 
     return children;

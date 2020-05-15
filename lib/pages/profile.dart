@@ -224,7 +224,7 @@ class _ProfilePageState extends State<ProfilePage> {
       _isLoadingActivities = true;
     });
 
-    widget.stravaService.getActivities(_start, _end).then((activities) {
+    widget.stravaService.getActivities(_start, _end.add(Duration(days: 1))).then((activities) {
       setState(() {
         _activities = activities;
         _isLoadingActivities = false;
