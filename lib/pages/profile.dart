@@ -135,6 +135,18 @@ class _ProfilePageState extends State<ProfilePage> {
               minWidth: 0,
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: ButtonTheme(
+                child: FlatButton(
+                  color: Colors.deepOrange,
+                  onPressed: _refreshActivities,
+                  child: Icon(Icons.refresh, color: Colors.white),
+                ),
+                minWidth: 0,
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              ),
+            ),
           ]
         ),
         Row(
