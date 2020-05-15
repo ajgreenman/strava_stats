@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
     _currentIndex = 0;
     _pages = [
       ProfilePage(stravaService: _stravaService),
-      TotalsScreen(stravaService: _stravaService)
+      TotalsScreen()
     ];
   }
     
